@@ -1,0 +1,25 @@
+{
+  "name": "gym-companion",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "eslintConfig": {
+    "extends": [
+      "wesbos/typescript"
+    ]
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.5.10",
+    "astro": "^4.5.15",
+    "eslint-config-wesbos": "^4.0.1",
+    "typescript": "^5.4.3"
+  }
+}
