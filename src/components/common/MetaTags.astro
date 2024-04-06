@@ -1,0 +1,72 @@
+---
+import { SEO } from "astro-seo";
+import { getImage } from "astro:assets";
+
+import { SITE } from "../../config.mjs";
+import { type MetaSEO } from "../../types";
+import { getAsset } from "../../utils/permalinks";
+
+export interface Props extends MetaSEO {
+  dontUseTitleTemplate?: boolean;
+}
+
+const defaultImage = SITE.defaultImage
+  ? (
+      await getImage({
+        src: SITE.defaultImage,
+        alt: "gym-companion-logo",
+        width: 1200,
+        height: 628,
+      })
+    ).src
+  : "";
+
+const {
+  title = SITE.name,
+  description = SITE.description,
+  image = defaultImage,
+  ogType = "website",
+} = Astro.props;
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#000000" />
+
+<SEO
+  title={title}
+  description={description}
+  openGraph={{
+    basic: {
+      title: title,
+      type: ogType,
+      image: image,
+    },
+  }}
+  twitter={{
+    creator: "@jonasmerlins1",
+  }}
+  extend={{
+    // extending the default link tags
+    link: [{ rel: "icon", href: "/favicon.ico" }],
+    // extending the default meta tags
+    meta: [
+      {
+        name: "twitter:image",
+        content: image,
+      },
+      { name: "twitter:title", content: title },
+      {
+        name: "twitter:description",
+        content: description,
+      },
+    ],
+  }}
+/>
+
+<link rel="shortcut icon" href={getAsset("/favicon.ico")} />
+<link rel="icon" type="image/svg+xml" href={getAsset("/favicon.svg")} />
+<link rel="mask-icon" href={getAsset("/favicon.svg")} color="#8D46E7" />
+<link rel="apple-touch-icon" href={getAsset("/apple-touch-icon.png")} />
+<link rel="manifest" href={getAsset("/site.webmanifest")} />
+<link rel="sitemap" href="/sitemap-index.xml" />

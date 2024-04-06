@@ -1,0 +1,31 @@
+---
+import { Image } from "astro:assets";
+import Logo from "./Logo.astro";
+import githubIcon from "../assets/images/icons/github-icon.svg";
+---
+
+<footer
+  class="footer p-4 bg-accent text-base-100 flex items-center justify-between"
+>
+  <div class="flex items-center space-x-2">
+    <Logo isInverse={false} />
+    <p class="text-secondary text-xs sm:text-sm md:text-base">
+      Made by
+      <a
+        href="https://vagdas.eu"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-primary font-bold"
+      >
+        VAGDAS
+      </a>
+    </p>
+  </div>
+  <a
+    href="https://github.com/georgevgs"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <Image src={githubIcon} width="30" height="30" alt="GitHub Icon" />
+  </a>
+</footer>

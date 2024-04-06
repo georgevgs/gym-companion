@@ -1,0 +1,36 @@
+---
+import Logo from "../components/Logo.astro";
+
+export interface Props {
+  isSticky?: boolean;
+  showToggleTheme?: boolean;
+}
+
+const { isSticky = false } = Astro.props;
+---
+
+<header
+  class:list={[
+    isSticky ? "sticky" : "relative",
+    "top-0 z-40 w-full transition-all ease-in duration-100",
+  ]}
+  id="header"
+>
+  <div class="navbar bg-primary text-base-100">
+    <div class="flex-1">
+      <a href="/" class="btn btn-ghost flex-col items-center">
+        <Logo isInverse={true} />
+        <p class="text-xl hidden md:block">Gym Companion</p>
+      </a>
+    </div>
+    <div class="flex-none">
+      <ul class="menu menu-horizontal px-1">
+        <li>
+          <a href="/workouts" class="hover:text-accent">
+            <p class="text-sm md:text-md font-bold">Workouts</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

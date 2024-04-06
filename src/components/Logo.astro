@@ -1,0 +1,19 @@
+---
+import { Image } from "astro:assets";
+import logoImage from "../assets/images/gym-companion/gym-companion-logo.png";
+import logoImageInverse from "../assets/images/gym-companion/gym-companion-logo-inverse.png";
+
+export interface Props {
+  isInverse: boolean;
+}
+
+const { isInverse = false } = Astro.props;
+---
+
+<Image
+  src={isInverse ? logoImageInverse : logoImage}
+  alt="gym-companion-logo"
+  height="75"
+  width="75"
+  class="w-12 h-12 md:w-16 md:h-16"
+/>
