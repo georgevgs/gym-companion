@@ -1,4 +1,5 @@
 ---
+import Hero from "../components/Hero.astro";
 import { SITE } from "../config.mjs";
 import Layout from "../layouts/PageLayout.astro";
 
@@ -9,4 +10,6 @@ const meta = {
 };
 ---
 
-<Layout {meta} />
+<Layout {meta}>
+  <Hero />
+</Layout>
