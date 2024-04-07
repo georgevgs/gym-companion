@@ -7,16 +7,17 @@ import { type MetaSEO } from "../types";
 
 export interface Props {
   meta?: MetaSEO;
+  isHome?: boolean;
 }
 
-const { meta } = Astro.props;
+const { meta, isHome = false } = Astro.props;
 ---
 
 <Layout {meta}>
   <slot name="header">
-    <Header isSticky showToggleTheme />
+    <Header isSticky showToggleTheme isHome={isHome} />
   </slot>
-  <main class="flex-grow">
+  <main class={`flex-grow ${isHome ? "-mt-[68px] md:-mt-[85px]" : ""}`}>
     <slot />
   </main>
   <slot name="footer">
