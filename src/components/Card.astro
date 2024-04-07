@@ -1,0 +1,47 @@
+---
+import { Image } from "astro:assets";
+
+export interface CardData {
+  link: string;
+  image: { src: ImageMetadata; alt: string };
+  title: string;
+  subtitle: string;
+}
+
+export interface Props {
+  cards: CardData[];
+}
+
+const { cards } = Astro.props;
+---
+
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {
+      cards.map((card, index) => (
+        <a href={card.link} class="block card-link">
+          <div class="card overflow-hidden transition ease-in-out hover:scale-105 cursor-pointer md:w-[380px] md:h-[300px]">
+            <figure class="relative w-full h-full">
+              <Image
+                class="hover:scale-110 transition duration-300 ease-in-out object-cover w-full h-full"
+                src={card.image.src}
+                alt={card.image.alt}
+              />
+              <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" />
+              <div class="absolute inset-0 flex items-center justify-center p-4">
+                <div class="text-center">
+                  <h2 class="text-accent text-lg md:text-xl text-shadow font-bold">
+                    {card.title}
+                  </h2>
+                  <p class="text-base-100 text-shadow text-sm">
+                    {card.subtitle}
+                  </p>
+                </div>
+              </div>
+            </figure>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</div>

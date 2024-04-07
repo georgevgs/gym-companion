@@ -1,0 +1,38 @@
+---
+import Layout from "../layouts/PageLayout.astro";
+import Card from "../components/Card.astro";
+
+import goldenSixArnold from "../assets/images/exercises/golden-six-arnold.avif";
+import goldenSevenArnold from "../assets/images/exercises/golden-seven-arnold.avif";
+
+const meta = {
+  title: "Workouts",
+  description:
+    "Revolutionize your fitness with tailored workouts for any level!",
+};
+
+const cards = [
+  {
+    link: "/workouts/golden-six",
+    image: { src: goldenSixArnold, alt: "Arnold's Golden Six" },
+    title: "Golden Six",
+    subtitle: "Is this the perfect beginner's session?",
+  },
+  {
+    link: "/workouts/golden-seven",
+    image: { src: goldenSevenArnold, alt: "Modern Golden Six" },
+    title: "Golden Seven",
+    subtitle: "Golden Six but with a modern twist",
+  },
+  {
+    link: "link-to-third-item",
+    image: { src: goldenSixArnold, alt: "First Item" },
+    title: "Third Item",
+    subtitle: "Subtitle of first third",
+  },
+];
+---
+
+<Layout {meta}>
+  <Card cards={cards} />
+</Layout>

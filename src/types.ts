@@ -10,3 +10,8 @@ export interface MetaSEO {
   ogTitle?: string;
   ogType?: string;
 }
+
+export interface ImageType {
+  src: string;
+  alt: string;
+}
