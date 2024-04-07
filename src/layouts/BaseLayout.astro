@@ -23,13 +23,8 @@ const { language = "en", textDirection = "ltr" } = SITE;
     <MetaTags {...meta} />
   </head>
 
-  <body class="antialiased text-page tracking-tight">
+  <body class="antialiased text-page tracking-tight flex flex-col min-h-screen">
     <slot />
     <BasicScripts />
-    <style is:global>
-      img {
-        content-visibility: auto;
-      }
-    </style>
   </body>
 </html>
