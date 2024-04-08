@@ -4,6 +4,7 @@ import Card from "../components/Card.astro";
 
 import goldenSixArnold from "../assets/images/exercises/golden-six-arnold.avif";
 import goldenSevenArnold from "../assets/images/exercises/golden-seven-arnold.avif";
+import Input from "../components/Input.astro";
 
 const meta = {
   title: "Workouts",
@@ -34,5 +35,15 @@ const cards = [
 ---
 
 <Layout {meta}>
-  <Card cards={cards} />
+  <div class="max-w-5xl mx-auto">
+    <Input
+      type="search"
+      id="cards-search-input"
+      placeholder="Search workouts"
+    />
+
+    <Card cards={cards} />
+  </div>
+
+  <script src="../scripts/workouts.ts"></script>
 </Layout>

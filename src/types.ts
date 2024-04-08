@@ -15,3 +15,10 @@ export interface ImageType {
   src: string;
   alt: string;
 }
+
+export interface CardData {
+  link: string;
+  image: { src: ImageMetadata; alt: string };
+  title: string;
+  subtitle: string;
+}
