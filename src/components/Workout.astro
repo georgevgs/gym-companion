@@ -1,0 +1,48 @@
+---
+import FinishWorkoutButton from "../components/FinishWorkoutButton.astro";
+
+import { type Exercise } from "../types";
+
+export interface Props {
+  exercises: Exercise[];
+}
+
+const { exercises } = Astro.props;
+---
+
+<div class="flex flex-col gap-6 max-w-5xl mx-auto py-8 px-4 sm:px-6">
+  {
+    exercises.map((exercise, exerciseIndex) => (
+      <div class="card shadow-lg hover:shadow-xl transition-shadow duration-300 border border-primary">
+        <div class="card-body">
+          <h2 class="card-title mb-6 text-xl md:text-2xl">{exercise.name}</h2>
+          <div class="flex gap-4 mb-4">
+            {[...Array(exercise.sets)].map((_, setIndex) => (
+              <div
+                class="transform transition duration-300 hover:scale-105 font-bold text-secondary rounded-full bg-accent flex items-center justify-center cursor-pointer h-14 w-14 p-4"
+                data-key={`${exercise.name}-${setIndex}`}
+                data-reps={exercise.reps}
+              >
+                {exercise.reps}
+              </div>
+            ))}
+          </div>
+          <div class="justify-end card-actions">
+            <div class="badge badge-primary text-lg p-5">{exercise.weight}</div>
+          </div>
+        </div>
+      </div>
+    ))
+  }
+
+  <div
+    id="countdownTimer"
+    class="fixed inset-x-0 bottom-4 max-w-sm mx-auto px-6 py-2 bg-opacity-90 bg-primary text-white text-xl font-semibold text-center rounded-full hidden"
+  >
+    <!-- Timer text will be dynamically inserted here -->
+  </div>
+</div>
+
+<FinishWorkoutButton />
+
+<script src="../scripts/workout-plans.ts"></script>

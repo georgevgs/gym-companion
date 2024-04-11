@@ -1,0 +1,30 @@
+---
+import Layout from "../../layouts/PageLayout.astro";
+import Workout from "../../components/Workout.astro";
+
+import { type Exercise } from "../../types";
+
+const meta = {
+  title: "Golden Seven",
+  description:
+    "Unleash your inner Olympian with the Golden Seven workout plan!",
+};
+
+const workoutExercises: Exercise[] = [
+  { name: "Dumbbell Front Squat", sets: 4, reps: 10, weight: "15,5kg" },
+  { name: "Standing Calf Raise", sets: 3, reps: 12, weight: "15,5kg" },
+  { name: "Dumbbell Bench Press", sets: 4, reps: 10, weight: "15,5kg" },
+  { name: "Dumbbell Row", sets: 4, reps: 10, weight: "12,5kg" },
+  {
+    name: "Dumbbell Overhead Press Seated",
+    sets: 3,
+    reps: 10,
+    weight: "7,3kg",
+  },
+  { name: "Dumbbell Curl", sets: 3, reps: 10, weight: "8,8kg" },
+];
+---
+
+<Layout meta={meta}>
+  <Workout exercises={workoutExercises} />
+</Layout>
