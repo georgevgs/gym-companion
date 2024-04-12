@@ -1,6 +1,7 @@
 ---
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import { ViewTransitions } from "astro:transitions";
 
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./../assets/styles/base.css";
 
 import MetaTags from "./../components/common/MetaTags.astro";
@@ -21,6 +22,7 @@ const { language = "en", textDirection = "ltr" } = SITE;
 <html lang={language} dir={textDirection} class="2xl:text-[20px]">
   <head>
     <MetaTags {...meta} />
+    <ViewTransitions />
   </head>
 
   <body class="antialiased text-page tracking-tight flex flex-col min-h-screen">
