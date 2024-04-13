@@ -132,7 +132,7 @@ const showNotification = (message: string) => {
       .then((registration) => {
         registration.showNotification("Workout App", {
           body: message,
-          icon: "../assets/images/gym-companion/gym-companion-icon.png",
+          icon: "../gym-companion-512x512.png",
           tag: "workout-time",
         });
       })
