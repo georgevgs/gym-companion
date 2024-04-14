@@ -37,9 +37,11 @@ const { exercises } = Astro.props;
 
   <div
     id="countdownTimer"
-    class="fixed inset-x-0 bottom-4 max-w-sm mx-auto px-6 py-2 bg-opacity-90 bg-primary text-white text-xl font-semibold text-center rounded-full hidden"
+    class="fixed inset-x-0 bottom-4 max-w-sm mx-auto px-6 py-2 bg-opacity-90 bg-primary text-white text-xl font-semibold text-center rounded-full hidden w-2/3"
   >
-    <!-- Timer text will be dynamically inserted here -->
+    <span class="countdown">
+      Rest <span class="px-2" style="--value:60;"></span> seconds
+    </span>
   </div>
 </div>
 

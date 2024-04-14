@@ -19,6 +19,14 @@ const updateCountdownDisplay = (
   countdownElement: HTMLElement,
   timeLeft: number
 ): void => {
+  const numberSpan = countdownElement.querySelector(
+    ".countdown > span"
+  ) as HTMLElement;
+  if (!numberSpan) {
+    console.error("Number span not found");
+    return;
+  }
+
   if (timeLeft <= 0) {
     clearInterval(activeRestInterval as number);
     activeRestInterval = null;
@@ -28,7 +36,6 @@ const updateCountdownDisplay = (
       JSON.stringify(Array.from(activeRestKeys))
     );
 
-    countdownElement.textContent = "";
     countdownElement.classList.add("hidden");
 
     emojiBlast({ emojis: ["🏋️"] });
@@ -39,7 +46,8 @@ const updateCountdownDisplay = (
       .play()
       .catch((error) => console.error("Audio play failed:", error));
   } else {
-    countdownElement.textContent = `Rest: ${(timeLeft / 1000).toFixed(0)} seconds`;
+    // Update the --value CSS variable of the number span
+    numberSpan.style.setProperty("--value", (timeLeft / 1000).toFixed(0));
   }
 };
 
