@@ -111,10 +111,10 @@ const initializeEventListeners = () => {
 const showNotification = () => {
   if (Notification.permission === "granted") {
     navigator.serviceWorker.getRegistration().then((registration) => {
-      registration?.showNotification("Hello from Your PWA!", {
-        body: "Here is the notification body.",
-        icon: "../../public/apple-touch-icon.png",
-        tag: "pwa-notification", // Use tag to manage notifications
+      registration?.showNotification("Ready for your next set?", {
+        body: "It's time to get back to work! 💪",
+        icon: "/apple-touch-icon.png",
+        tag: "pwa-notification",
       });
     });
   }
