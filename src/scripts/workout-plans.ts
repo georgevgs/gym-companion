@@ -25,7 +25,7 @@ const updateCountdownDisplay = (
     emojiBlast({ emojis: ["🏋️"] });
 
     // Send push notification after the rest period
-    sendNotification("Time to continue your workout!");
+    showNotification();
   } else {
     countdownElement.textContent = `Rest: ${(timeLeft / 1000).toFixed(0)} seconds`;
   }
@@ -108,37 +108,15 @@ const initializeEventListeners = () => {
   finishWorkoutButton?.addEventListener("click", finishWorkout);
 };
 
-// Refined function to send a push notification
-const sendNotification = (message: string) => {
-  if (!("Notification" in window)) {
-    console.log("This browser does not support desktop notification");
-    return;
-  }
-
+const showNotification = () => {
   if (Notification.permission === "granted") {
-    showNotification(message);
-  } else if (Notification.permission !== "denied") {
-    Notification.requestPermission().then((permission) => {
-      if (permission === "granted") {
-        showNotification(message);
-      }
-    });
-  }
-};
-
-const showNotification = (message: string) => {
-  if (navigator.serviceWorker) {
-    navigator.serviceWorker.ready
-      .then((registration) => {
-        registration.showNotification("Workout App", {
-          body: message,
-          icon: "../gym-companion-512x512.png",
-          tag: "workout-time",
-        });
-      })
-      .catch((error) => {
-        console.error("Failed to show notification", error);
+    navigator.serviceWorker.getRegistration().then((registration) => {
+      registration?.showNotification("Hello from Your PWA!", {
+        body: "Here is the notification body.",
+        icon: "../../public/apple-touch-icon.png",
+        tag: "pwa-notification", // Use tag to manage notifications
       });
+    });
   }
 };
 
