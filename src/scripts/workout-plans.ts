@@ -9,17 +9,16 @@ let audioPlayer: HTMLAudioElement;
 const lastActiveDate =
   localStorage.getItem("lastActiveDate") ?? new Date().toDateString();
 
-// Function to prepare the audio player
-const prepareAudioPlayer = () => {
-  audioPlayer = new Audio("/boxing-bell.mp3");
-  audioPlayer.load(); // Pre-load the audio to reduce delay when played later
+const loadBoxingBellSound = (): void => {
+  const boxingBellSoundPath = "/sounds/boxing-bell.mp3";
+  audioPlayer = new Audio(boxingBellSoundPath);
+  audioPlayer.load();
 };
 
-// Function to update the countdown display and play sound notification
 const updateCountdownDisplay = (
   countdownElement: HTMLElement,
   timeLeft: number
-) => {
+): void => {
   if (timeLeft <= 0) {
     clearInterval(activeRestInterval as number);
     activeRestInterval = null;
@@ -28,15 +27,14 @@ const updateCountdownDisplay = (
       "activeRestKeys",
       JSON.stringify(Array.from(activeRestKeys))
     );
+
     countdownElement.textContent = "";
     countdownElement.classList.add("hidden");
 
     emojiBlast({ emojis: ["🏋️"] });
 
-    // Send push notification after the rest period
     showNotification();
 
-    // Play sound notification
     audioPlayer
       .play()
       .catch((error) => console.error("Audio play failed:", error));
@@ -45,12 +43,11 @@ const updateCountdownDisplay = (
   }
 };
 
-// Function to start the rest period
 const startRest = async (
   exerciseName: string,
   setIndex: number,
   badgeElement: HTMLElement
-) => {
+): Promise<void> => {
   const key = `${exerciseName}-${setIndex}`;
 
   if (activeRestInterval) {
@@ -64,13 +61,15 @@ const startRest = async (
   }
 
   badgeElement.classList.add("bg-primary");
+  badgeElement.classList.add("text-slate-100");
+
   activeRestKeys.add(key);
   localStorage.setItem(
     "activeRestKeys",
     JSON.stringify(Array.from(activeRestKeys))
   );
 
-  const endTime = Date.now() + 60000; // 60 seconds
+  const endTime = Date.now() + 60000;
   const countdownElement = document.getElementById("countdownTimer");
   countdownElement?.classList.remove("hidden");
   updateCountdownDisplay(countdownElement as HTMLElement, 60000);
@@ -81,9 +80,9 @@ const startRest = async (
   }, 1000);
 };
 
-// Function to restore UI state from localStorage on page load
-const restoreUIState = () => {
-  if (localStorage.getItem("golden-seven-finished")) {
+const restoreUIState = (): void => {
+  const isGoldenSevenFinished = localStorage.getItem("golden-seven-finished");
+  if (isGoldenSevenFinished) {
     localStorage.clear();
   }
 
@@ -97,26 +96,29 @@ const restoreUIState = () => {
   activeRestKeys.forEach((key) => {
     const badge = document.querySelector(`[data-key="${key}"]`);
     if (badge) {
-      badge.classList.add("bg-primary");
+      badge.classList.add("bg-primary", "text-slate-100");
     }
   });
 };
 
-// Function to attach event listeners to badges and restore UI state
-const initializeEventListeners = () => {
+const initializeEventListeners = (): void => {
   restoreUIState();
 
   document.querySelectorAll("[data-key]").forEach((badge) => {
-    badge.addEventListener("click", function handleClick() {
+    badge.addEventListener("click", () => {
       if (badge.classList.contains("bg-primary")) {
-        return; // Ignore click if badge is already active
+        return;
       }
-      const [exerciseName, setIndexStr] =
-        badge.getAttribute("data-key")?.split("-") ?? [];
+
+      const [exerciseName, setIndexStr] = (
+        badge.getAttribute("data-key") || ""
+      ).split("-");
+
       if (exerciseName && setIndexStr) {
         if (!audioPlayer) {
-          prepareAudioPlayer(); // Prepare and unlock the audio player
+          loadBoxingBellSound();
         }
+
         startRest(
           exerciseName,
           parseInt(setIndexStr, 10),
@@ -137,7 +139,7 @@ const initializeEventListeners = () => {
   finishWorkoutButton?.addEventListener("click", finishWorkout);
 };
 
-const showNotification = () => {
+const showNotification = (): void => {
   if (Notification.permission === "granted") {
     navigator.serviceWorker.getRegistration().then((registration) => {
       registration?.showNotification("Ready for your next set?", {
@@ -149,11 +151,16 @@ const showNotification = () => {
   }
 };
 
-const finishWorkout = () => {
+const finishWorkout = (): void => {
   const formattedTitle = document.title.toLowerCase().replace(/\s+/g, "-");
   localStorage.setItem(`${formattedTitle}-finished`, "true");
 
   emojiBlasts({ emojis: ["🎉💪🥳"] });
+
+  const crowdCheerPlayer = new Audio("/sounds/crowd-cheer.mp3");
+  crowdCheerPlayer
+    .play()
+    .catch((error) => console.error("Crowd cheer play failed:", error));
 
   if (wakeLock) {
     wakeLock.release().then(() => {
@@ -167,7 +174,6 @@ const finishWorkout = () => {
   }, 10000);
 };
 
-// Run the initialization function once the DOM is fully loaded
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initializeEventListeners);
 } else {
