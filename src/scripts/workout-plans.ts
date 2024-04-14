@@ -6,7 +6,16 @@ let activeRestKeys = new Set<string>();
 const lastActiveDate =
   localStorage.getItem("lastActiveDate") ?? new Date().toDateString();
 
-// Function to update the countdown display
+// Global audio player
+let audioPlayer: HTMLAudioElement;
+
+// Function to prepare the audio player
+const prepareAudioPlayer = () => {
+  audioPlayer = new Audio("/boxing-bell.mp3");
+  audioPlayer.load(); // Pre-load the audio to reduce delay when played later
+};
+
+// Function to update the countdown display and play sound notification
 const updateCountdownDisplay = (
   countdownElement: HTMLElement,
   timeLeft: number
@@ -26,6 +35,11 @@ const updateCountdownDisplay = (
 
     // Send push notification after the rest period
     showNotification();
+
+    // Play sound notification
+    audioPlayer
+      .play()
+      .catch((error) => console.error("Audio play failed:", error));
   } else {
     countdownElement.textContent = `Rest: ${(timeLeft / 1000).toFixed(0)} seconds`;
   }
@@ -51,7 +65,7 @@ const startRest = (
     JSON.stringify(Array.from(activeRestKeys))
   );
 
-  const endTime = Date.now() + 60000;
+  const endTime = Date.now() + 60000; // 60 seconds
   const countdownElement = document.getElementById("countdownTimer");
   countdownElement?.classList.remove("hidden");
   updateCountdownDisplay(countdownElement as HTMLElement, 60000);
@@ -95,6 +109,9 @@ const initializeEventListeners = () => {
       const [exerciseName, setIndexStr] =
         badge.getAttribute("data-key")?.split("-") ?? [];
       if (exerciseName && setIndexStr) {
+        if (!audioPlayer) {
+          prepareAudioPlayer(); // Prepare and unlock the audio player
+        }
         startRest(
           exerciseName,
           parseInt(setIndexStr, 10),
