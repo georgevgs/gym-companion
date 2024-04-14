@@ -110,6 +110,18 @@ const initializeEventListeners = () => {
     document.body.style.backgroundColor = "green";
   }
 
+  wakeLock?.addEventListener("release", () => {
+    // the wake lock has been released
+    document.body.style.backgroundColor = "orange";
+  });
+  
+  document.addEventListener("visibilitychange", async () => {
+    if (wakeLock !== null && document.visibilityState === "visible") {
+      wakeLock = await navigator.wakeLock.request("screen");
+    }
+  });
+  
+
   document.querySelectorAll("[data-key]").forEach((badge) => {
     badge.addEventListener("click", function handleClick() {
       if (badge.classList.contains("bg-primary")) {
