@@ -2,12 +2,12 @@ import { emojiBlast, emojiBlasts } from "emoji-blast";
 
 let activeRestInterval: number | null = null;
 let activeRestKeys = new Set<string>();
+let wakeLock: WakeLockSentinel | null = null;
+let isWakeLockActive = false;
+let audioPlayer: HTMLAudioElement;
 
 const lastActiveDate =
   localStorage.getItem("lastActiveDate") ?? new Date().toDateString();
-
-// Global audio player
-let audioPlayer: HTMLAudioElement;
 
 // Function to prepare the audio player
 const prepareAudioPlayer = () => {
@@ -46,7 +46,7 @@ const updateCountdownDisplay = (
 };
 
 // Function to start the rest period
-const startRest = (
+const startRest = async (
   exerciseName: string,
   setIndex: number,
   badgeElement: HTMLElement
@@ -56,6 +56,11 @@ const startRest = (
   if (activeRestInterval) {
     clearInterval(activeRestInterval);
     activeRestInterval = null;
+  }
+
+  if (!isWakeLockActive) {
+    wakeLock = await navigator.wakeLock.request("screen");
+    isWakeLockActive = true;
   }
 
   badgeElement.classList.add("bg-primary");
@@ -140,7 +145,15 @@ const showNotification = () => {
 const finishWorkout = () => {
   const formattedTitle = document.title.toLowerCase().replace(/\s+/g, "-");
   localStorage.setItem(`${formattedTitle}-finished`, "true");
+
   emojiBlasts({ emojis: ["🎉💪🥳"] });
+
+  if (wakeLock) {
+    wakeLock.release().then(() => {
+      wakeLock = null;
+    });
+    isWakeLockActive = false;
+  }
 
   setTimeout(() => {
     window.location.href = "/workouts";
