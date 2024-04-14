@@ -106,6 +106,10 @@ const restoreUIState = () => {
 const initializeEventListeners = () => {
   restoreUIState();
 
+  if ("wakeLock" in navigator) {
+    document.body.style.backgroundColor = "green";
+  }
+
   document.querySelectorAll("[data-key]").forEach((badge) => {
     badge.addEventListener("click", function handleClick() {
       if (badge.classList.contains("bg-primary")) {
