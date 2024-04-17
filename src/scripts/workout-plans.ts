@@ -46,7 +46,6 @@ const updateCountdownDisplay = (
       .play()
       .catch((error) => console.error("Audio play failed:", error));
   } else {
-    // Update the --value CSS variable of the number span
     numberSpan.style.setProperty("--value", (timeLeft / 1000).toFixed(0));
   }
 };
