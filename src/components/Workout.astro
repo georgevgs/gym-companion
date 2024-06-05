@@ -10,12 +10,31 @@ export interface Props {
 const { exercises } = Astro.props;
 ---
 
-<div class="flex flex-col gap-6 max-w-5xl mx-auto py-8 px-4 sm:px-6">
+<sector class="workout-plan flex flex-col gap-6 max-w-5xl mx-auto py-8 px-4 sm:px-6">
   {
     exercises.map((exercise, exerciseIndex) => (
       <div class="card shadow-lg hover:shadow-xl transition-shadow duration-300 border border-primary">
         <div class="card-body">
-          <h2 class="card-title mb-6 text-xl md:text-2xl">{exercise.name}</h2>
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="card-title text-xl md:text-2xl">{exercise.name}</h2>
+            <button
+              id={`edit-button-${exerciseIndex}`}
+              class="btn btn-ghost btn-sm open-modal-button"
+              aria-label="Edit"
+              aria-controls={`edit-workout-plan-${exerciseIndex}`}
+            >
+              <svg
+                width="30px"
+                height="30px"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="#000000"
+                class="bi bi-three-dots-vertical"
+              >
+                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+              </svg>
+            </button>
+          </div>
           <div class="flex gap-4 mb-4">
             {[...Array(exercise.sets)].map((_, setIndex) => (
               <div
@@ -43,7 +62,22 @@ const { exercises } = Astro.props;
       Rest <span class="px-2" style="--value:60;"></span> seconds
     </span>
   </div>
-</div>
+
+  {exercises.map((exercise, exerciseIndex) => (
+    <dialog id={`edit-workout-plan-${exerciseIndex}`} class="modal">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Hello!</h3>
+        <p class="py-4">Press ESC key or click the button below to close</p>
+        <div class="modal-action">
+          <form method="dialog">
+            <!-- if there is a button in form, it will close the modal -->
+            <button class="btn">Save</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+  ))}
+</sector>
 
 <FinishWorkoutButton />
 

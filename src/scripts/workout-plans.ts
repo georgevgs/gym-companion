@@ -186,3 +186,22 @@ if (document.readyState === "loading") {
 } else {
   initializeEventListeners();
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const openModalButtons = document.querySelectorAll(
+    ".open-modal-button"
+  ) as NodeListOf<HTMLElement>;
+
+  openModalButtons.forEach((openModalButton, index) => {
+    openModalButton.addEventListener("click", () => {
+      const modalId = openModalButton.getAttribute("aria-controls");
+      const modal = document.getElementById(
+        modalId!
+      ) as HTMLDialogElement | null;
+
+      if (modal) {
+        modal.showModal();
+      }
+    });
+  });
+});

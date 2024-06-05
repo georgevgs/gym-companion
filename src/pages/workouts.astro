@@ -3,6 +3,7 @@ import Layout from "../layouts/PageLayout.astro";
 import Card from "../components/Card.astro";
 import Input from "../components/Input.astro";
 
+import quickFullBody from "../assets/images/exercises/arnold-dumbbell-curls.avif";
 import goldenSixArnold from "../assets/images/exercises/golden-six-arnold.avif";
 import goldenSevenArnold from "../assets/images/exercises/golden-seven-arnold.avif";
 
@@ -13,6 +14,12 @@ const meta = {
 };
 
 const cards = [
+  {
+    link: "/workouts/quick-full-body",
+    image: { src: quickFullBody, alt: "Quick Full-Body" },
+    title: "Quick Full-Body",
+    subtitle: "Efficient 35-minute routine for strength and endurance",
+  },
   {
     link: "/workouts/golden-six",
     image: { src: goldenSixArnold, alt: "Arnold's Golden Six" },
