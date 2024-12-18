@@ -1,0 +1,42 @@
+name: PR Merge Status Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR Number to Check'
+        required: true
+        type: string
+
+jobs:
+  check-pr-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check PR Merge Commit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          # Fetch the merge commit for the specified PR
+          PR_MERGE_COMMIT=$(gh pr view "$PR_NUMBER" --json mergeCommit | jq -r '.mergeCommit.oid')
+          
+          if [ -z "$PR_MERGE_COMMIT" ] || [ "$PR_MERGE_COMMIT" = "null" ]; then
+            echo "Error: Could not fetch merge commit for PR #$PR_NUMBER"
+            exit 1
+          fi
+          
+          # Check if the merge commit is on master
+          if git branch -r --contains "$PR_MERGE_COMMIT" | grep -q 'origin/master'; then
+            echo "✅ PR #$PR_NUMBER merge commit is on master branch"
+            echo "Merge Commit: $PR_MERGE_COMMIT"
+            exit 0
+          else
+            echo "❌ PR #$PR_NUMBER merge commit is NOT on master branch"
+            echo "Merge Commit: $PR_MERGE_COMMIT"
+            exit 1
+          fi
